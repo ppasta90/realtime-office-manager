@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name":  "Stanza 1",
+    "tools": [
+      "lettino",
+      "ecografo",
+      "lampada da dermatologia"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Stanza 2",
+    "tools": [
+      "lettino"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Stanza 3",
+    "tools": [
+      "lettino",
+      "bilancia medica"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Stanza 4",
+    "tools": [
+      "lettino"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Stanza 5",
+    "tools": [
+      "lettino elettrico"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Stanza 6",
+    "tools": [
+      "lettino"
+      ]
+  }
+]
