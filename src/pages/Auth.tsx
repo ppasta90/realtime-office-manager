@@ -12,8 +12,9 @@ const Auth = () => {
                     {isLogin ? 'Signup' : 'Login'}
                 </button></p>
             </div>
-            <div className="w-1/2 bg-gray-100 h-full flex flex-col justify-center items-center">
-                <h2>Welcome to the Office</h2>
+            <div className="w-1/2 bg-gray-100 h-full flex flex-col justify-center items-center gap-4">
+                <h1 className="text-4xl font-bold">Office manager</h1>
+                <p className="text-lg">Manage your office with ease</p>
             </div>
         </div>
     )

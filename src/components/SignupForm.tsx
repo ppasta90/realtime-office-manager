@@ -1,8 +1,31 @@
-
 const SignupForm = () => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('Form submitted');
+        
+        try {
+            const formData = new FormData(e.target as HTMLFormElement);
+            const data = Object.fromEntries(formData.entries());
+            
+            const response = await fetch('http://localhost:3000/signup', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const responseData = await response.json();
+            console.log('Success:', responseData);
+            alert('Signup successful');
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Signup failed. Please try again.');
+        }
     }
     return (
         <form className="flex flex-col items-center justify-center gap-4" action="" onSubmit={handleSubmit}>
