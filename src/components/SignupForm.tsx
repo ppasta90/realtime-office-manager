@@ -1,4 +1,8 @@
+import { useUser } from '../context/UserContext.tsx';
+
 const SignupForm = () => {
+    const { setUser } = useUser();
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
@@ -19,8 +23,8 @@ const SignupForm = () => {
             }
             
             const responseData = await response.json();
-            console.log('Success:', responseData);
-            alert('Signup successful');
+            setUser(responseData.user);
+            localStorage.setItem('user', JSON.stringify(responseData.user));
             
         } catch (error) {
             console.error('Error:', error);
