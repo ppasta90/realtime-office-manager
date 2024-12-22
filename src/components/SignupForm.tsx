@@ -25,7 +25,6 @@ const SignupForm = () => {
             const responseData = await response.json();
             setUser(responseData.user);
             localStorage.setItem('user', JSON.stringify(responseData.user));
-            
         } catch (error) {
             console.error('Error:', error);
             alert('Signup failed. Please try again.');
