@@ -1,4 +1,5 @@
 import { useUser } from '../context/UserContext.tsx';
+import { toast } from 'react-toastify';
 
 const SignupForm = () => {
     const { setUser } = useUser();
@@ -18,16 +19,18 @@ const SignupForm = () => {
                 }
             });
 
+            const responseData = await response.json();
+
             if (!response.ok) {
+                toast.error(responseData.message);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            const responseData = await response.json();
             setUser(responseData.user);
             localStorage.setItem('user', JSON.stringify(responseData.user));
+            toast.success('Signup successful. Please login.');
         } catch (error) {
             console.error('Error:', error);
-            alert('Signup failed. Please try again.');
         }
     }
     return (

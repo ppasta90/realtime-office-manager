@@ -43,10 +43,6 @@ mongoose.connect(MONGO_URI, {
     .then(() => logger.info("Connected to MongoDB"))
     .catch((err) => logger.error("MongoDB connection error:", err));
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
 app.post('/signup', async (req, res) => {
     try {
         const { name, lastName, specialization, username, email, password, confirmPassword } = req.body;
@@ -55,13 +51,18 @@ app.post('/signup', async (req, res) => {
             return res.status(400).json({ message: 'Passwords do not match' });
         }
 
-        const existingUser = await User.findOne({
-            $or: [{ email }, { username }]
-        });
+        const existingUserByEmail = await User.findOne({ email });
+        const existingUserByUsername = await User.findOne({ username });
 
-        if (existingUser) {
+        if (existingUserByEmail) {
             return res.status(400).json({
-                message: 'User with this email or username already exists'
+                message: 'User with this email already exists'
+            });
+        }
+
+        if (existingUserByUsername) {
+            return res.status(400).json({
+                message: 'User with this username already exists'
             });
         }
 
@@ -92,6 +93,24 @@ app.post('/signup', async (req, res) => {
     } catch (error) {
         logger.error('Signup error:', error);
         res.status(500).json({ message: 'Error creating user' });
+    }
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid username or password' });
+        }
+        res.status(200).json({ message: 'Login successful', user });
+    } catch (error) {
+        logger.error('Login error:', error);
+        res.status(500).json({ message: 'Error logging in' });
     }
 });
 

@@ -1,25 +1,29 @@
 import { useUser } from '../context/UserContext';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
     const { setUser } = useUser();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
         try {
             const formData = new FormData(e.target as HTMLFormElement);
             const data = Object.fromEntries(formData.entries());
-            
-            // Implement your login API call here
-            // For now, we'll just simulate a successful login
-            setUser({
-                name: "Test",
-                lastName: "User",
-                specialization: "dermatologist",
-                username: data.username as string,
-                email: "test@example.com"
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             });
-            
+            const responseData = await response.json();
+            if (!response.ok) {
+                toast.error(responseData.message);
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            setUser(responseData.user);
+            localStorage.setItem('user', JSON.stringify(responseData.user));
+            toast.success('Login successful');
         } catch (error) {
             console.error('Error:', error);
             alert('Login failed. Please try again.');
